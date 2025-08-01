@@ -89,7 +89,7 @@
   </div>
 
   <script>
-    const apiKey = "AIzaSyDMWWYjIpIYo6nCHTZjG_53wHJHBBO__2s"; // عوضها بمفتاح API ديالك
+    const apiKey = "YOUR_API_KEY"; // عوضها بمفتاح API ديالك
 
     let currentTitle = "";
     let currentVideoId = "";
@@ -106,7 +106,7 @@
 
       if (!videoId) return alert("❌ الرابط غير صحيح");
 
-      currentVideoId = videoId; // خزناه لتحميل الصورة الأصلية
+      currentVideoId = videoId;
 
       const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`;
 
@@ -128,7 +128,6 @@
         document.getElementById("videoDescription").innerText = description;
         document.getElementById("videoTags").innerText = tags;
 
-        // بدل ما نستعمل thumbnail من API نستعمل رابط الصورة الأصلية مباشرة
         const originalThumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
         document.getElementById("videoThumbnail").src = originalThumbnailUrl;
 
@@ -153,10 +152,8 @@
     function downloadThumbnail() {
       if (!currentVideoId || !currentTitle) return alert("❌ لم يتم تحميل الفيديو بعد");
 
-      // رابط الصورة الأصلية
       const url = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
 
-      // تنظيف العنوان من الرموز الغير صالحة لأسماء الملفات
       const cleanTitle = currentTitle.replace(/[\\\/:*?"<>|]/g, '').substring(0, 50) || "thumbnail";
 
       fetch(url)
@@ -179,7 +176,11 @@
       const title = document.getElementById("videoTitle").innerText || 'description';
       const fileName = `${title.replace(/[^\w\- ]+/g, '').substring(0, 50)}.txt`;
 
-      const blob = new Blob([text], { type: 'text/plain' });
+      // تصحيح الترميز باستخدام TextEncoder
+      const encoder = new TextEncoder();
+      const encodedText = encoder.encode(text);
+
+      const blob = new Blob([encodedText], { type: 'text/plain;charset=utf-8' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = fileName;
