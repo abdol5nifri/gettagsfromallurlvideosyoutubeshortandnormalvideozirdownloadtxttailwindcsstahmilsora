@@ -1,63 +1,98 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" >
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>🧲 أداة جلب بيانات فيديو يوتيوب</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 min-h-screen p-6 text-right">
+<body class="bg-gray-50 min-h-screen p-4 sm:p-6 text-right">
   <div class="max-w-xl mx-auto space-y-6">
-    <h1 class="text-2xl font-bold text-center text-gray-800">🧲 جلب معلومات فيديو من يوتيوب</h1>
+    <h1 class="text-2xl font-bold text-center text-gray-800 mb-4">🧲 جلب معلومات فيديو من يوتيوب</h1>
 
-    <input type="text" id="videoUrl" placeholder="ضع رابط فيديو يوتيوب هنا" class="w-full p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+    <input
+      type="text"
+      id="videoUrl"
+      placeholder="ضع رابط فيديو يوتيوب هنا"
+      class="w-full p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm sm:text-base"
+    />
 
-    <button onclick="fetchVideoData()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">جلب التاغات والمعلومات</button>
+    <button
+      onclick="fetchVideoData()"
+      class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded text-sm sm:text-base"
+    >
+      جلب التاغات والمعلومات
+    </button>
 
-    <div id="videoInfo" class="hidden space-y-6">
+    <div id="videoInfo" class="hidden space-y-6 mt-6">
 
       <!-- العنوان -->
       <div>
-        <h2 class="font-bold text-lg text-gray-800">📌 العنوان:</h2>
-        <div class="flex items-start justify-between gap-4">
-          <p id="videoTitle" class="flex-1 text-gray-700 break-words"></p>
-          <button onclick="copyText('videoTitle')" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-sm">📋 نسخ</button>
+        <h2 class="font-bold text-lg text-gray-800 mb-1">📌 العنوان:</h2>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <p id="videoTitle" class="flex-1 text-gray-700 break-words text-sm sm:text-base"></p>
+          <button
+            onclick="copyText('videoTitle')"
+            class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-sm"
+          >📋 نسخ</button>
         </div>
       </div>
 
       <!-- الوصف -->
       <div>
-        <h2 class="font-bold text-lg text-gray-800">📝 الوصف:</h2>
-        <div class="flex items-start justify-between gap-4">
-          <p id="videoDescription" class="flex-1 text-gray-600 whitespace-pre-line break-words max-h-60 overflow-auto text-sm"></p>
-          <button onclick="copyText('videoDescription')" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-sm">📋 نسخ</button>
+        <h2 class="font-bold text-lg text-gray-800 mb-1">📝 الوصف:</h2>
+        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+          <p
+            id="videoDescription"
+            class="flex-1 text-gray-600 whitespace-pre-line break-words max-h-60 overflow-auto text-xs sm:text-sm"
+          ></p>
+          <button
+            onclick="copyText('videoDescription')"
+            class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-sm whitespace-nowrap"
+          >📋 نسخ</button>
         </div>
-        <button onclick="downloadDescription()" class="mt-2 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-sm">📄 تحميل الوصف كـ .txt</button>
+        <button
+          onclick="downloadDescription()"
+          class="mt-2 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-sm"
+        >📄 تحميل الوصف كـ .txt</button>
       </div>
 
       <!-- التاغات -->
       <div>
-        <h2 class="font-bold text-lg text-gray-800">🏷️ التاغات:</h2>
-        <div class="flex items-start justify-between gap-4">
-          <p id="videoTags" class="flex-1 text-gray-700 break-words text-sm"></p>
-          <button onclick="copyText('videoTags')" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-sm">📋 نسخ</button>
+        <h2 class="font-bold text-lg text-gray-800 mb-1">🏷️ التاغات:</h2>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <p id="videoTags" class="flex-1 text-gray-700 break-words text-sm sm:text-base"></p>
+          <button
+            onclick="copyText('videoTags')"
+            class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-sm whitespace-nowrap"
+          >📋 نسخ</button>
         </div>
       </div>
 
       <!-- الصورة المصغرة -->
       <div>
-        <h2 class="font-bold text-lg text-gray-800">🖼️ الصورة المصغرة:</h2>
-        <div class="space-y-2">
-          <img id="videoThumbnail" class="rounded-lg w-full max-w-xs shadow-md" src="" alt="thumbnail" />
-          <button onclick="downloadThumbnail()" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-sm">📥 تحميل الصورة</button>
+        <h2 class="font-bold text-lg text-gray-800 mb-1">🖼️ الصورة المصغرة:</h2>
+        <div class="space-y-2 max-w-xs">
+          <img
+            id="videoThumbnail"
+            class="rounded-lg w-full shadow-md"
+            src=""
+            alt="thumbnail"
+          />
+          <button
+            onclick="downloadThumbnail()"
+            class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-sm w-full"
+          >📥 تحميل الصورة الأصلية</button>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    const apiKey = "AIzaSyDMWWYjIpIYo6nCHTZjG_53wHJHBBO__2s"; // ← عوضها بمفتاح API ديالك
+    const apiKey = "AIzaSyDMWWYjIpIYo6nCHTZjG_53wHJHBBO__2s"; // عوضها بمفتاح API ديالك
 
-    let currentTitle = ""; // نخزن العنوان باش نستعمله في تحميل الصورة
+    let currentTitle = "";
+    let currentVideoId = "";
 
     function extractVideoId(url) {
       const regex = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/|v\/|.+\?v=))([^&?\/\s]+)/;
@@ -71,6 +106,8 @@
 
       if (!videoId) return alert("❌ الرابط غير صحيح");
 
+      currentVideoId = videoId; // خزناه لتحميل الصورة الأصلية
+
       const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`;
 
       try {
@@ -83,16 +120,17 @@
         const title = snippet.title || "";
         const description = snippet.description || "";
         const tagsArray = snippet.tags || [];
-        const tags = tagsArray.join(", "); // بدون #
+        const tags = tagsArray.join(", ");
 
-        const thumbnail = snippet.thumbnails?.maxres?.url || snippet.thumbnails?.high?.url || "";
-
-        currentTitle = title; // نخزن العنوان
+        currentTitle = title;
 
         document.getElementById("videoTitle").innerText = title;
         document.getElementById("videoDescription").innerText = description;
         document.getElementById("videoTags").innerText = tags;
-        document.getElementById("videoThumbnail").src = thumbnail;
+
+        // بدل ما نستعمل thumbnail من API نستعمل رابط الصورة الأصلية مباشرة
+        const originalThumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+        document.getElementById("videoThumbnail").src = originalThumbnailUrl;
 
         document.getElementById("videoInfo").classList.remove("hidden");
 
@@ -113,14 +151,19 @@
     }
 
     function downloadThumbnail() {
-      const url = document.getElementById("videoThumbnail").src;
-      if (!url) return;
+      if (!currentVideoId || !currentTitle) return alert("❌ لم يتم تحميل الفيديو بعد");
 
-      // تنظيف العنوان من رموز غير صالحة في اسم الملف
+      // رابط الصورة الأصلية
+      const url = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
+
+      // تنظيف العنوان من الرموز الغير صالحة لأسماء الملفات
       const cleanTitle = currentTitle.replace(/[\\\/:*?"<>|]/g, '').substring(0, 50) || "thumbnail";
 
       fetch(url)
-        .then(response => response.blob())
+        .then(response => {
+          if (!response.ok) throw new Error("الصورة الأصلية غير متوفرة");
+          return response.blob();
+        })
         .then(blob => {
           const a = document.createElement('a');
           a.href = URL.createObjectURL(blob);
@@ -128,7 +171,7 @@
           a.click();
           URL.revokeObjectURL(a.href);
         })
-        .catch(() => alert("❌ خطأ أثناء تحميل الصورة"));
+        .catch(() => alert("❌ الصورة الأصلية غير متوفرة أو حدث خطأ أثناء تحميلها"));
     }
 
     function downloadDescription() {
