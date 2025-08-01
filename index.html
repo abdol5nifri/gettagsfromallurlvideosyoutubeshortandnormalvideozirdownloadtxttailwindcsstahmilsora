@@ -57,6 +57,8 @@
   <script>
     const apiKey = "AIzaSyDMWWYjIpIYo6nCHTZjG_53wHJHBBO__2s"; // ← عوضها بمفتاح API ديالك
 
+    let currentTitle = ""; // نخزن العنوان باش نستعمله في تحميل الصورة
+
     function extractVideoId(url) {
       const regex = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/|v\/|.+\?v=))([^&?\/\s]+)/;
       const match = url.match(regex);
@@ -83,7 +85,9 @@
         const tagsArray = snippet.tags || [];
         const tags = tagsArray.join(", "); // بدون #
 
-        const thumbnail = snippet.thumbnails?.high?.url || "";
+        const thumbnail = snippet.thumbnails?.maxres?.url || snippet.thumbnails?.high?.url || "";
+
+        currentTitle = title; // نخزن العنوان
 
         document.getElementById("videoTitle").innerText = title;
         document.getElementById("videoDescription").innerText = description;
@@ -112,12 +116,15 @@
       const url = document.getElementById("videoThumbnail").src;
       if (!url) return;
 
+      // تنظيف العنوان من رموز غير صالحة في اسم الملف
+      const cleanTitle = currentTitle.replace(/[\\\/:*?"<>|]/g, '').substring(0, 50) || "thumbnail";
+
       fetch(url)
         .then(response => response.blob())
         .then(blob => {
           const a = document.createElement('a');
           a.href = URL.createObjectURL(blob);
-          a.download = 'thumbnail.jpg';
+          a.download = cleanTitle + '.jpg';
           a.click();
           URL.revokeObjectURL(a.href);
         })
